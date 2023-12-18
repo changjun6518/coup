@@ -4,6 +4,7 @@ import com.jun.coup_back.card.character.Assassin;
 import com.jun.coup_back.card.character.Ability;
 import com.jun.coup_back.card.character.Card;
 import com.jun.coup_back.card.character.Contessa;
+import com.jun.coup_back.card.character.Duke;
 import com.jun.coup_back.io.InputRobot;
 import com.jun.coup_back.io.OutputRobot;
 import java.util.List;
@@ -44,8 +45,44 @@ public class Participant {
                 coin += 2;
                 break;
             case 3:
-                System.out.println("3코인을 획득했습니다.");
-                coin += 3;
+                boolean challenge = false;
+                for (Participant participant : participantList) {
+                    if (id == participant.getId()) {
+                        continue;
+                    }
+                    if (!participant.isAlive()) {
+                        continue;
+                    }
+                    if (challenge) {
+                        continue;
+                    }
+                    System.out.println(participant.getId() + "번 참가자");
+                    System.out.println(id + "님이 공작이 아닌 것에 도전하겠습니까?");
+                    System.out.println("1. 너 공작 아니지? 도전!!");
+                    System.out.println("2. 믿는다.. 스킵.");
+                    int participantChoice = InputRobot.scanner.nextInt();
+                    // TODO - 상황별 알고리즘을 짜고 코딩하는게 더 빠를듯??
+                    switch (participantChoice) {
+                        case 1:
+                            challenge = true;
+                            System.out.println("공작이 아니다에 도전하였습니다.");
+                            if (cardA.isAlive() && cardA instanceof Duke || cardB.isAlive() && cardB instanceof Duke) {
+                                System.out.println("공작 두두등장..!");
+                                participant.dead();
+                                System.out.println(id + "님이 3코인을 획득했습니다.");
+                                coin += 3;
+                            } else {
+                                System.out.println("으악 공작이 없네??");
+                                this.dead();
+                            }
+                            break;
+                        case 2:
+                            System.out.println("공작이라고?? 하 믿는다..");
+                            System.out.println(id + "님이 3코인을 획득했습니다.");
+                            coin += 3;
+                            break;
+                    }
+                }
                 break;
             case 4:
                 if (coin >= 3) {

@@ -14,6 +14,10 @@ public abstract class Card {
         this.name = name;
     }
 
+    public boolean isAlive() {
+        return state;
+    }
+
     @Override
     public String toString() {
         return name;
