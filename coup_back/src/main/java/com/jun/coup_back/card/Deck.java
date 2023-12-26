@@ -40,7 +40,7 @@ public class Deck {
         return cardList.pop();
     }
 
-    private void receive(Card card) {
+    public void receive(Card card) {
         cardList.add(card);
     }
 }

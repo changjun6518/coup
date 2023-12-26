@@ -23,7 +23,7 @@ public class Game {
             for (Participant participant : participantList) {
                 if (participant.isAlive()) {
                     part++;
-                    participant.action(participantList);
+                    participant.action(participantList, deck);
                 }
             }
             if (part > 1) {
