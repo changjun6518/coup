@@ -2,6 +2,7 @@ package com.jun.coup_back.participant;
 
 import com.jun.coup_back.card.Deck;
 import com.jun.coup_back.card.character.Assassin;
+import com.jun.coup_back.card.character.Captain;
 import com.jun.coup_back.card.character.Card;
 import com.jun.coup_back.card.character.Contessa;
 import com.jun.coup_back.card.character.Duke;
@@ -228,6 +229,104 @@ public class Participant {
                 break;
             case 6:
                 System.out.println("6. 갈취(다른 플레이어 코인 2원 갈취) / 사령관 케릭터 행동");
+                System.out.println("어떤 플레이어의 코인을 갈취하시겠습니까?");
+                for (Participant participant : participantList) {
+                    if (id == participant.getId()) {
+                        continue;
+                    }
+                    if (!participant.isAlive()) {
+                        continue;
+                    }
+                    System.out.println(participant.getId() + "번 참가자");
+                }
+                int playerChoice = InputRobot.scanner.nextInt();
+                System.out.println(playerChoice + "번 참가자를 선택하였습니다.");
+                Participant 상대 = null;
+                for (Participant participant : participantList) {
+                    if (playerChoice == participant.getId()) {
+                        상대 = participant;
+                        break;
+                    }
+                }
+                System.out.println("1. 너 사령관 아니잖아");
+                System.out.println("2. 나도 사령관이야 못가져가 어딜!");
+                System.out.println("3. 허허 난 대사랍니다~ 못가져가지요");
+                System.out.println("4. 하 그냥 줄게요..");
+                int secondChoice = InputRobot.scanner.nextInt();
+                switch (secondChoice) {
+                    case 1:
+                        if (cardA.isAlive() && cardA instanceof Captain
+                                || cardB.isAlive() && cardB instanceof Captain) {
+                            System.out.println("사령관 두두등장..!");
+                            상대.dead();
+                            int minusCoin = 상대.minusCoin();
+                            this.coin += minusCoin;
+                            System.out.println(minusCoin + "원 획득!");
+                        } else {
+                            System.out.println("으악 사령관이 없네??");
+                            this.dead();
+                            System.out.println();
+                        }
+                        break;
+                    case 2:
+                        System.out.println("상대가 사령관이 아니라는 것에 도전하시겠습니까?");
+                        System.out.println("1. 너 사령관 아니잖아 왜그래");
+                        System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
+                        int 상대가_사령관_아님에_도전 = InputRobot.scanner.nextInt();
+                        switch (상대가_사령관_아님에_도전) {
+                            case 1:
+                                if (상대.getCardA().isAlive() && 상대.getCardA() instanceof Captain
+                                        || 상대.getCardB().isAlive() && 상대.getCardB() instanceof Captain) {
+                                    System.out.println("사령관 두두등장..!");
+                                    this.dead();
+                                } else {
+                                    System.out.println("으악 사령관이 없네??");
+                                    상대.dead();
+                                    int minusCoin = 상대.minusCoin();
+                                    this.coin += minusCoin;
+                                    System.out.println(minusCoin + "원 획득!");
+                                    System.out.println();
+                                }
+                                break;
+                            case 2:
+                                System.out.println("넘어간다~ 아무일도 일어나지 않았다..");
+                                break;
+                        }
+                        break;
+
+                    case 3:
+                        System.out.println("상대가 대사가 아니라는 것에 도전하시겠습니까?");
+                        System.out.println("1. 너 대사 아니잖아 왜그래");
+                        System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
+                        int 상대가_대사가_아님에_도전 = InputRobot.scanner.nextInt();
+                        switch (상대가_대사가_아님에_도전) {
+                            case 1:
+                                if (상대.getCardA().isAlive() && 상대.getCardA() instanceof Embassador
+                                        || 상대.getCardB().isAlive() && 상대.getCardB() instanceof Embassador) {
+                                    System.out.println("대사 두두등장..!");
+                                    this.dead();
+                                } else {
+                                    System.out.println("으악 대사가 없네??");
+                                    상대.dead();
+                                    int minusCoin = 상대.minusCoin();
+                                    this.coin += minusCoin;
+                                    System.out.println(minusCoin + "원 획득!");
+                                    System.out.println();
+                                }
+                                break;
+                            case 2:
+                                System.out.println("넘어간다~ 아무일도 일어나지 않았다..");
+                                break;
+                        }
+                        break;
+                    case 4:
+                        System.out.println("그냥 넘어간다...");
+                        int minusCoin = 상대.minusCoin();
+                        this.coin += minusCoin;
+                        System.out.println(minusCoin + "원 획득!");
+                        break;
+
+                }
                 break;
             case 7:
                 System.out.println("7. 쿠!!!(다른 플레이어 카드 1장 제거)");
@@ -241,7 +340,7 @@ public class Participant {
                     }
                     System.out.println(participant.getId() + "번 참가자");
                 }
-                int playerChoice = InputRobot.scanner.nextInt();
+                playerChoice = InputRobot.scanner.nextInt();
                 for (Participant participant : participantList) {
                     if (participant.getId() == playerChoice) {
                         participant.dead();
@@ -343,5 +442,16 @@ public class Participant {
             cardList.add(cardB);
         }
         return cardList;
+    }
+
+    public int minusCoin() {
+        if (coin >= 2) {
+            coin -= 2;
+            return 2;
+        } else if (coin == 1) {
+            coin -= 1;
+            return 1;
+        }
+        return 0;
     }
 }
