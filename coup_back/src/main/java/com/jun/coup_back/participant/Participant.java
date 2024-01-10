@@ -27,6 +27,16 @@ public class Participant {
     private Card cardB;
     private int coin;
 
+    private Action action;
+
+    public void addCoin(int coin) {
+        this.coin += coin;
+    }
+
+    public void minusCoin(int coin) {
+        this.coin -= coin;
+    }
+
     public void action(List<Participant> participantList, Deck deck) {
         System.out.println(id + "님 차례입니다.");
         showAliveCard();
