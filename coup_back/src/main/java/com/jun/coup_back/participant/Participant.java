@@ -37,7 +37,7 @@ public class Participant {
         this.coin -= coin;
     }
 
-    public void action(List<Participant> participantList, Deck deck) {
+    public void action(ParticipantList participantList2, List<Participant> participantList, Deck deck) {
         System.out.println(id + "님 차례입니다.");
         showAliveCard();
         System.out.println("보유 coin : " + coin);
@@ -47,61 +47,10 @@ public class Participant {
         boolean success = false;
         switch (choice) {
             case 1:
-                System.out.println("1코인을 획득했습니다.");
-                coin++;
+                action.addOneCoin(this);
                 break;
             case 2:
-                boolean avalible = true;
-                for (Participant participant : participantList) {
-                    if (id == participant.getId()) {
-                        continue;
-                    }
-                    if (!participant.isAlive()) {
-                        continue;
-                    }
-                    if (challenge) {
-                        continue;
-                    }
-                    System.out.println(participant.getId() + "번 참가자");
-                    System.out.println(id + "님이 해외원조하는 것을 방해하시겠습니까? (공작 패시브)");
-                    System.out.println("1. 나 공작이라서 너 2원 못가져가. 내려놔!");
-                    System.out.println("2. 넘어갈게요~~");
-                    int participantChoice = InputRobot.scanner.nextInt();
-                    switch (participantChoice) {
-                        case 1:
-                            challenge = true;
-                            System.out.println("2원 못가져 가도록 하였습니다.");
-                            System.out.println(id + "번 참가자");
-                            System.out.println(participant.getId() + "님이 공작이 아니라는 것에 도전하시겠습니까?");
-                            System.out.println("1. 너 공작 아니잖아. 다시 2원 가져와");
-                            System.out.println("2. 젠장.. 넘어갈게요..");
-                            int secondParticipantChoice = InputRobot.scanner.nextInt();
-                            switch (secondParticipantChoice) {
-                                case 1:
-                                    if (participant.getCardA().isAlive() && participant.getCardA() instanceof Duke || participant.getCardB().isAlive() && participant.getCardB() instanceof Duke) {
-                                        System.out.println("공작 두두등장..!");
-                                        this.dead();
-                                        avalible = false;
-                                    } else {
-                                        System.out.println("으악 공작이 없네??");
-                                        participant.dead();
-                                    }
-                                    break;
-                                case 2:
-                                    avalible = false;
-                                    break;
-                            }
-
-                            break;
-                        case 2:
-                            break;
-                    }
-                }
-                if (avalible) {
-                    coin += 2;
-                    System.out.println(id + "참가자 2코인을 획득했습니다.");
-                }
-
+                action.addTwoCoin(this, participantList2);
                 break;
             case 3:
                 for (Participant participant : participantList) {
