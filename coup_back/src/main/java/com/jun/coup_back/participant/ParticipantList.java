@@ -12,7 +12,7 @@ public class ParticipantList {
     public ParticipantList(Deck deck, int number) {
         participantList = new ArrayList<>();
         for (int i = 0; i < number; i++) {
-            participantList.add(new Participant(i + 1, deck.give(), deck.give(), 2, new Action()));
+            participantList.add(new Participant(i + 1, deck.give(), deck.give(), 2, false, new Action()));
         }
     }
 
@@ -30,12 +30,9 @@ public class ParticipantList {
     }
 
     public boolean isAlive() {
-        for (Participant participant : participantList) {
-            if (Boolean.TRUE.equals(participant.isAlive())) {
-                return true;
-            }
-        }
-        return false;
+        return participantList.stream()
+                .filter(Participant::isAlive)
+                .count() > 1;
     }
 
     public void action(Deck deck) {
@@ -49,6 +46,13 @@ public class ParticipantList {
     public Participant getLastAliveParticipant() {
         return participantList.stream()
                 .filter(participant -> Boolean.TRUE.equals(participant.isAlive()))
+                .findFirst()
+                .orElseThrow();
+    }
+
+    public Participant getParticipantById(int id) {
+        return participantList.stream()
+                .filter(participant -> participant.getId() == id)
                 .findFirst()
                 .orElseThrow();
     }

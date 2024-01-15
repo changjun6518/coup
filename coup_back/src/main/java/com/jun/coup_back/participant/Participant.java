@@ -27,6 +27,8 @@ public class Participant {
     private Card cardB;
     private int coin;
 
+    private boolean isChallenged;
+
     private Action action;
 
     public void addCoin(int coin) {
@@ -45,6 +47,8 @@ public class Participant {
         int choice = InputRobot.selectChoice();
         boolean challenge = false;
         boolean success = false;
+
+        isChallenged = false;
         switch (choice) {
             case 1:
                 action.addOneCoin(this);
@@ -53,265 +57,27 @@ public class Participant {
                 action.addTwoCoin(this, participantList2);
                 break;
             case 3:
-                for (Participant participant : participantList) {
-                    if (id == participant.getId()) {
-                        continue;
-                    }
-                    if (!participant.isAlive()) {
-                        continue;
-                    }
-                    if (challenge) {
-                        continue;
-                    }
-                    System.out.println(participant.getId() + "번 참가자");
-                    System.out.println(id + "님이 공작이 아닌 것에 도전하겠습니까?");
-                    System.out.println("1. 너 공작 아니지? 도전!!");
-                    System.out.println("2. 믿는다.. 스킵.");
-                    int participantChoice = InputRobot.scanner.nextInt();
-                    // TODO - 상황별 알고리즘을 짜고 코딩하는게 더 빠를듯??
-                    switch (participantChoice) {
-                        case 1:
-                            challenge = true;
-                            System.out.println("공작이 아니다에 도전하였습니다.");
-                            if (cardA.isAlive() && cardA instanceof Duke || cardB.isAlive() && cardB instanceof Duke) {
-                                System.out.println("공작 두두등장..!");
-                                participant.dead();
-                                System.out.println(id + "님이 3코인을 획득했습니다.");
-                                coin += 3;
-                            } else {
-                                System.out.println("으악 공작이 없네??");
-                                this.dead();
-                            }
-                            break;
-                        case 2:
-                            System.out.println("공작이라고?? 하 믿는다..");
-                            System.out.println(id + "님이 3코인을 획득했습니다.");
-                            coin += 3;
-                            break;
-                    }
-                }
+                action.addThreeCoin(this, participantList2);
                 break;
             case 4:
-                if (coin >= 3) {
-                    System.out.println("누구를 암살하시겠습니까?");
-                    for (Participant participant : participantList) {
-                        if (id == participant.getId()) {
-                            continue;
-                        }
-                        if (!participant.isAlive()) {
-                            continue;
-                        }
-                        System.out.println(participant.getId() + "번 참가자");
-                    }
-                    int otherId = InputRobot.scanner.nextInt();
-                    for (Participant participant : participantList) {
-                        if (otherId == participant.getId()) {
-                            System.out.println("1. '암살자가 아니다'에 도전한다.");
-                            System.out.println("2. '귀부인이 있다'로 방어한다.");
-                            System.out.println("3. 순순히 암살당한다.");
-                            int otherChoice = InputRobot.scanner.nextInt();
-                            switch (otherChoice) {
-                                case 1: // 의심하거나
-                                    System.out.println("상대가 암살자가 아니다에 도전하였습니다.");
-                                    if (cardA instanceof Assassin || cardB instanceof Assassin) {
-                                        System.out.println("암살자 카드를 오픈합니다! 도전에 실패하여 상대 카드를 하나 제거합니다.");
-                                        participant.dead();
-                                        if (participant.isAlive()) {
-                                            participant.dead();
-                                        }
-                                    } else {
-                                        System.out.println("암살자 카드가 없습니다... 도전에 성공하여 자신의 카드를 하나 제거합니다.");
-                                        this.dead();
-                                    }
-                                    break;
-                                case 2: // 방어하거나
-                                    System.out.println("상대가 귀부인으로 방어하였습니다.");
-                                    System.out.println("1. 귀부인,,, 인정한다...");
-                                    System.out.println("2. 귀부인??? 개소리마라!!!");
-                                    int defenceChoice = InputRobot.scanner.nextInt();
-                                    if (defenceChoice == 2) {
-                                        if (participant.cardA instanceof Contessa || participant.cardB instanceof Contessa) {
-                                            System.out.println("아이고 이를 어째??? 귀부인 등장");
-                                            System.out.println("의심을 실패하였습니다. 자신의 카드를 제거합니다.");
-                                            this.dead();
-                                        }
-                                    }
-                                    break;
-                                case 3: // 순순히 죽거나
-                                    participant.dead();
-                                    break;
-                            }
-                        }
-                    }
-                    this.coin -= 3; // 암살 비용 3원 차감
-                }
+                action.assassinate(this, participantList2);
                 break;
             case 5:
-                System.out.println("5. 카드교환(카드 2장 가져와 교환) / 대사 케릭터 행동");
-                System.out.println(id + "님이 카드를 교환하려고 합니다.");
-
-                for (Participant participant : participantList) {
-                    if (id == participant.getId()) continue;
-                    if (!participant.isAlive()) continue;
-                    if (challenge) continue;
-
-                    System.out.println(participant.getId() + "번 참가자");
-                    System.out.println(id + "님이 대사가 아닌 것에 도전하겠습니까?");
-                    System.out.println("1. 너 대사 아니지? 도전!!");
-                    System.out.println("2. 믿는다.. 스킵.");
-                    int participantChoice = InputRobot.scanner.nextInt();
-                    switch (participantChoice) {
-                        case 1:
-                            challenge = true;
-                            System.out.println("대사가 아니다에 도전하였습니다.");
-                            if (cardA.isAlive() && cardA instanceof Embassador || cardB.isAlive() && cardB instanceof Embassador) {
-                                System.out.println("대사 두두등장..!");
-                                participant.dead();
-                                success = true;
-                            } else {
-                                System.out.println("으악 대사가 없네??");
-                                this.dead();
-                                success = false;
-                                System.out.println();
-                            }
-                            break;
-                        case 2:
-                            System.out.println("대사라고?? 하 믿는다..");
-                            success = true;
-                            break;
-                    }
-                }
-                if (success) {
-                    // 카드 변경
-                    embassadorAction(deck);
-                }
+                action.exchangeCard(this, participantList2, deck);
                 break;
             case 6:
-                System.out.println("6. 갈취(다른 플레이어 코인 2원 갈취) / 사령관 케릭터 행동");
-                System.out.println("어떤 플레이어의 코인을 갈취하시겠습니까?");
-                for (Participant participant : participantList) {
-                    if (id == participant.getId()) {
-                        continue;
-                    }
-                    if (!participant.isAlive()) {
-                        continue;
-                    }
-                    System.out.println(participant.getId() + "번 참가자");
-                }
-                int playerChoice = InputRobot.scanner.nextInt();
-                System.out.println(playerChoice + "번 참가자를 선택하였습니다.");
-                Participant 상대 = null;
-                for (Participant participant : participantList) {
-                    if (playerChoice == participant.getId()) {
-                        상대 = participant;
-                        break;
-                    }
-                }
-                System.out.println("1. 너 사령관 아니잖아");
-                System.out.println("2. 나도 사령관이야 못가져가 어딜!");
-                System.out.println("3. 허허 난 대사랍니다~ 못가져가지요");
-                System.out.println("4. 하 그냥 줄게요..");
-                int secondChoice = InputRobot.scanner.nextInt();
-                switch (secondChoice) {
-                    case 1:
-                        if (cardA.isAlive() && cardA instanceof Captain
-                                || cardB.isAlive() && cardB instanceof Captain) {
-                            System.out.println("사령관 두두등장..!");
-                            상대.dead();
-                            int minusCoin = 상대.minusCoin();
-                            this.coin += minusCoin;
-                            System.out.println(minusCoin + "원 획득!");
-                        } else {
-                            System.out.println("으악 사령관이 없네??");
-                            this.dead();
-                            System.out.println();
-                        }
-                        break;
-                    case 2:
-                        System.out.println("상대가 사령관이 아니라는 것에 도전하시겠습니까?");
-                        System.out.println("1. 너 사령관 아니잖아 왜그래");
-                        System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
-                        int 상대가_사령관_아님에_도전 = InputRobot.scanner.nextInt();
-                        switch (상대가_사령관_아님에_도전) {
-                            case 1:
-                                if (상대.getCardA().isAlive() && 상대.getCardA() instanceof Captain
-                                        || 상대.getCardB().isAlive() && 상대.getCardB() instanceof Captain) {
-                                    System.out.println("사령관 두두등장..!");
-                                    this.dead();
-                                } else {
-                                    System.out.println("으악 사령관이 없네??");
-                                    상대.dead();
-                                    int minusCoin = 상대.minusCoin();
-                                    this.coin += minusCoin;
-                                    System.out.println(minusCoin + "원 획득!");
-                                    System.out.println();
-                                }
-                                break;
-                            case 2:
-                                System.out.println("넘어간다~ 아무일도 일어나지 않았다..");
-                                break;
-                        }
-                        break;
-
-                    case 3:
-                        System.out.println("상대가 대사가 아니라는 것에 도전하시겠습니까?");
-                        System.out.println("1. 너 대사 아니잖아 왜그래");
-                        System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
-                        int 상대가_대사가_아님에_도전 = InputRobot.scanner.nextInt();
-                        switch (상대가_대사가_아님에_도전) {
-                            case 1:
-                                if (상대.getCardA().isAlive() && 상대.getCardA() instanceof Embassador
-                                        || 상대.getCardB().isAlive() && 상대.getCardB() instanceof Embassador) {
-                                    System.out.println("대사 두두등장..!");
-                                    this.dead();
-                                } else {
-                                    System.out.println("으악 대사가 없네??");
-                                    상대.dead();
-                                    int minusCoin = 상대.minusCoin();
-                                    this.coin += minusCoin;
-                                    System.out.println(minusCoin + "원 획득!");
-                                    System.out.println();
-                                }
-                                break;
-                            case 2:
-                                System.out.println("넘어간다~ 아무일도 일어나지 않았다..");
-                                break;
-                        }
-                        break;
-                    case 4:
-                        System.out.println("그냥 넘어간다...");
-                        int minusCoin = 상대.minusCoin();
-                        this.coin += minusCoin;
-                        System.out.println(minusCoin + "원 획득!");
-                        break;
-
-                }
+                action.extortCoin(this, participantList2);
                 break;
             case 7:
-                System.out.println("7. 쿠!!!(다른 플레이어 카드 1장 제거)");
-                coin -= 7;
-                for (Participant participant : participantList) {
-                    if (id == participant.getId()) {
-                        continue;
-                    }
-                    if (!participant.isAlive()) {
-                        continue;
-                    }
-                    System.out.println(participant.getId() + "번 참가자");
-                }
-                playerChoice = InputRobot.scanner.nextInt();
-                for (Participant participant : participantList) {
-                    if (participant.getId() == playerChoice) {
-                        participant.dead();
-                        break;
-                    }
-                }
+                action.coup(this, participantList2);
                 break;
+            default:
+                System.out.println("앙");
         }
         System.out.println("\n\n");
     }
 
-    private void showAliveCard() {
+    public void showAliveCard() {
         if (Boolean.TRUE.equals(cardA.getState())) {
             System.out.println("cardA : " + cardA.toString());
         }
@@ -392,7 +158,7 @@ public class Participant {
         return false;
     }
 
-    private List<Card> getAliveCard() {
+    public List<Card> getAliveCard() {
         ArrayList<Card> cardList = new ArrayList<>();
         if (Boolean.TRUE.equals(cardA.getState())) {
             cardList.add(cardA);
