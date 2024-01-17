@@ -1,5 +1,6 @@
 package com.jun.coup_back.io;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class InputRobot {
@@ -7,7 +8,7 @@ public class InputRobot {
     public static final Scanner scanner = new Scanner(System.in);
 
     public static int selectChoice() {
-        int choice = scanner.nextInt();
+        int choice = selectChoice(7);
         switch (choice) {
             case 1:
                 System.out.println("1. 소득(1원 얻기)");
@@ -32,5 +33,60 @@ public class InputRobot {
                 break;
         }
         return choice;
+    }
+
+    public static int selectChoice(int limit) {
+        String userInput = scanner.next();
+        try {
+            int userInputNumber = Integer.parseInt(userInput);
+            if (userInputNumber <= 0 || userInputNumber > limit) {
+                throw new IllegalArgumentException(String.format("음 1부터 %d까지 가능합니다.", limit));
+            }
+            return userInputNumber;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return selectChoice(limit);
+        }
+    }
+
+    public static int selectChoice(List<Integer> idList) {
+        String userInput = scanner.next();
+        try {
+            int userInputNumber = Integer.parseInt(userInput);
+            if (!idList.contains(userInputNumber)) {
+                StringBuilder errorMessage = new StringBuilder();
+                for (Integer id : idList) {
+                    errorMessage.append(id).append("번 \t");
+                }
+                errorMessage.append("만 입력 가능합니다.");
+                throw new IllegalArgumentException(errorMessage.toString());
+            }
+            return userInputNumber;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return selectChoice(idList);
+        }
+    }
+
+    public static int selectChoice(int limit, List<Integer> idList) {
+        String userInput = scanner.next();
+        try {
+            int userInputNumber = Integer.parseInt(userInput);
+            if (userInputNumber <= 0 || userInputNumber > limit) {
+                throw new IllegalArgumentException(String.format("음 1부터 %d까지 가능합니다.", limit));
+            }
+            if (!idList.contains(userInputNumber)) {
+                StringBuilder errorMessage = new StringBuilder();
+                for (Integer id : idList) {
+                    errorMessage.append(id).append("번 \t");
+                }
+                errorMessage.append("만 입력 가능합니다.");
+                throw new IllegalArgumentException(errorMessage.toString());
+            }
+            return userInputNumber;
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return selectChoice(idList);
+        }
     }
 }

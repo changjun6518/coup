@@ -29,6 +29,14 @@ public class ParticipantList {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> getAliveParticipantIdList(int id) {
+        return participantList.stream()
+                .filter(participant -> participant.getId() != id)
+                .filter(Participant::isAlive)
+                .map(Participant::getId)
+                .collect(Collectors.toList());
+    }
+
     public boolean isAlive() {
         return participantList.stream()
                 .filter(Participant::isAlive)

@@ -45,8 +45,6 @@ public class Participant {
         System.out.println("보유 coin : " + coin);
         OutputRobot.printActionMenu();
         int choice = InputRobot.selectChoice();
-        boolean challenge = false;
-        boolean success = false;
 
         isChallenged = false;
         switch (choice) {
@@ -86,48 +84,13 @@ public class Participant {
         }
     }
 
-    private void embassadorAction(Deck deck) {
-        Card giveA = deck.give();
-        Card giveB = deck.give();
-        ArrayList<Card> cardList = new ArrayList<>();
-        cardList.add(cardA);
-        cardList.add(cardB);
-        cardList.add(giveA);
-        cardList.add(giveB);
-        for (int i = 0; i < cardList.size(); i++) {
-            System.out.println((i + 1) + "번 카드 : " + cardList.get(i).getName());
-        }
-        System.out.println("카드를 선택해주세요.");
-        int cardChoice = InputRobot.scanner.nextInt() - 1;
-        System.out.println(cardList.get(cardChoice).getName() + " 카드를 선택하였습니다.");
-        List<Card> aliveCardList = getAliveCard();
-        Card card = aliveCardList.get(0);
-        if (card.equals(cardA)) { // equals의 원리랄까..
-            cardA = aliveCardList.get(0);
-        } else {
-            cardB = aliveCardList.get(0);
-        }
-
-        if (aliveCardList.size() == 2) {
-            System.out.println("한장의 카드를 더 선택해주세요.");
-            for (int i = 0; i < cardList.size(); i++) {
-                if (cardChoice == i) continue;
-                System.out.println((i + 1) + "번 카드 : " + cardList.get(i).getName());
-            }
-            cardChoice = InputRobot.scanner.nextInt() - 1;
-            cardB = cardList.get(cardChoice);
-        }
-        System.out.println("카드 선택을 완료했습니다. \n");
-        showAliveCard();
-    }
-
     public void dead() {
         if (cardA.getState() && cardB.getState()) {
             System.out.println("cardA : " + cardA.toString());
             System.out.println("cardB : " + cardB.toString());
             System.out.println("1. cardA를 버린다.");
             System.out.println("2. cardB를 버린다.");
-            int cardChoice = InputRobot.scanner.nextInt();
+            int cardChoice = InputRobot.selectChoice(2);
             if (cardChoice == 1) {
                 cardA.setState(false);
             }
@@ -156,17 +119,6 @@ public class Participant {
         }
 
         return false;
-    }
-
-    public List<Card> getAliveCard() {
-        ArrayList<Card> cardList = new ArrayList<>();
-        if (Boolean.TRUE.equals(cardA.getState())) {
-            cardList.add(cardA);
-        }
-        if (Boolean.TRUE.equals(cardB.getState())) {
-            cardList.add(cardB);
-        }
-        return cardList;
     }
 
     public int minusCoin() {

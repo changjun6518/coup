@@ -1,6 +1,5 @@
 package com.jun.coup_back.participant;
 
-import ch.qos.logback.core.joran.conditional.IfAction;
 import com.jun.coup_back.card.Deck;
 import com.jun.coup_back.card.character.Assassin;
 import com.jun.coup_back.card.character.Captain;
@@ -9,9 +8,9 @@ import com.jun.coup_back.card.character.Contessa;
 import com.jun.coup_back.card.character.Duke;
 import com.jun.coup_back.card.character.Embassador;
 import com.jun.coup_back.io.InputRobot;
-import java.io.ObjectInputValidation;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Action {
 
@@ -37,7 +36,7 @@ public class Action {
         System.out.println(to.getId() + "님이 해외원조하는 것을 방해하시겠습니까? (공작 패시브)");
         System.out.println("1. 나 공작이라서 너 2원 못가져가. 내려놔!");
         System.out.println("2. 넘어갈게요~~");
-        int participantChoice = InputRobot.scanner.nextInt();
+        int participantChoice = InputRobot.selectChoice(2);
         switch (participantChoice) {
             case 1:
                 System.out.println("1. 나 공작이라서 너 2원 못가져가. 내려놔!");
@@ -56,7 +55,7 @@ public class Action {
         System.out.println(to.getId() + "님이 공작이 아니라는 것에 도전하시겠습니까?");
         System.out.println("1. 너 공작 아니잖아. 다시 2원 가져와");
         System.out.println("2. 젠장.. 넘어갈게요..");
-        int secondParticipantChoice = InputRobot.scanner.nextInt();
+        int secondParticipantChoice = InputRobot.selectChoice(2);
         switch (secondParticipantChoice) {
             case 1:
                 if (to.getCardA().isAlive() && to.getCardA() instanceof Duke
@@ -93,7 +92,7 @@ public class Action {
         System.out.println(to.getId() + "님이 공작이 아니라는 것에 도전하시겠습니까?");
         System.out.println("1. 너 공작 아니잖아 ㅋ");
         System.out.println("2. 넘어갈게요~~");
-        int participantChoice = InputRobot.scanner.nextInt();
+        int participantChoice = InputRobot.selectChoice(2);
         switch (participantChoice) {
             case 1:
                 to.setChallenged(true);
@@ -122,14 +121,14 @@ public class Action {
         }
         System.out.println("누구를 암살하시겠습니까?");
         participantList.printAliveParticipantListWithoutMe(from.getId());
-        int otherId = InputRobot.scanner.nextInt();
+        int otherId = InputRobot.selectChoice(participantList.getAliveParticipantIdList(from.getId()));
         Participant to = participantList.getParticipantById(otherId);
 
         System.out.println("1. '암살자가 아니다'에 도전한다.");
         System.out.println("2. '귀부인이 있다'로 방어한다.");
         System.out.println("3. 순순히 암살당한다.");
 
-        int otherChoice = InputRobot.scanner.nextInt();
+        int otherChoice = InputRobot.selectChoice(3);
         switch (otherChoice) {
             case 1: // 의심하거나
                 System.out.println("상대가 암살자가 아니다에 도전하였습니다.");
@@ -148,7 +147,7 @@ public class Action {
                 System.out.println("상대가 귀부인으로 방어하였습니다.");
                 System.out.println("1. 귀부인,,, 인정한다...");
                 System.out.println("2. 귀부인??? 개소리마라!!!");
-                int defenceChoice = InputRobot.scanner.nextInt();
+                int defenceChoice = InputRobot.selectChoice(2);
                 switch (defenceChoice) {
                     case 1:
                         System.out.println("귀부인,, 인정한다,,,");
@@ -185,7 +184,7 @@ public class Action {
             System.out.println(from.getId() + "님이 대사가 아닌 것에 도전하겠습니까?");
             System.out.println("1. 너 대사 아니지? 도전!!");
             System.out.println("2. 믿는다.. 스킵.");
-            int participantChoice = InputRobot.scanner.nextInt();
+            int participantChoice = InputRobot.selectChoice(2);
             switch (participantChoice) {
                 case 1:
                     from.setChallenged(true);
@@ -225,18 +224,19 @@ public class Action {
             System.out.println((i + 1) + "번 카드 : " + cardList.get(i).getName());
         }
         System.out.println("카드를 선택해주세요.");
-        int cardChoice = InputRobot.scanner.nextInt() - 1;
+        int cardChoice = InputRobot.selectChoice(4) - 1;
         System.out.println(cardList.get(cardChoice).getName() + " 카드를 선택하였습니다.");
 
         if (participant.getCardA().isAlive() && participant.getCardB().isAlive()) {
             participant.setCardA(cardList.get(cardChoice));
             System.out.println("한장의 카드를 더 선택해주세요.");
-
+            List<Integer> aliveIdList = new ArrayList<>();
             for (int i = 0; i < cardList.size(); i++) {
                 if (cardChoice == i) continue;
+                aliveIdList.add(i + 1);
                 System.out.println((i + 1) + "번 카드 : " + cardList.get(i).getName());
             }
-            cardChoice = InputRobot.scanner.nextInt() - 1;
+            cardChoice = InputRobot.selectChoice(4, aliveIdList) - 1;
             participant.setCardB(cardList.get(cardChoice));
         } else if (participant.getCardA().isAlive()) {
             participant.setCardA(cardList.get(cardChoice));
@@ -256,7 +256,7 @@ public class Action {
         System.out.println("어떤 플레이어의 코인을 갈취하시겠습니까?");
         participantList.printAliveParticipantListWithoutMe(from.getId());
         boolean success = true;
-        int playerChoice = InputRobot.scanner.nextInt();
+        int playerChoice = InputRobot.selectChoice(participantList.getAliveParticipantIdList(from.getId()));
         System.out.println(playerChoice + "번 참가자를 선택하였습니다.");
         Participant to = participantList.getParticipantById(playerChoice);
 
@@ -265,7 +265,7 @@ public class Action {
         System.out.println("2. 나도 사령관이야 못가져가 어딜!");
         System.out.println("3. 허허 난 대사랍니다~ 못가져가지요");
         System.out.println("4. 하 그냥 줄게요..");
-        int secondChoice = InputRobot.scanner.nextInt();
+        int secondChoice = InputRobot.selectChoice(4);
         switch (secondChoice) {
             case 1:
                 if (from.getCardA().isAlive() && from.getCardA() instanceof Captain
@@ -284,7 +284,7 @@ public class Action {
                 System.out.println("상대가 사령관이 아니라는 것에 도전하시겠습니까?");
                 System.out.println("1. 너 사령관 아니잖아 왜그래");
                 System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
-                int 상대가_사령관_아님에_도전 = InputRobot.scanner.nextInt();
+                int 상대가_사령관_아님에_도전 = InputRobot.selectChoice(2);
                 switch (상대가_사령관_아님에_도전) {
                     case 1:
                         if (to.getCardA().isAlive() && to.getCardA() instanceof Captain
@@ -310,7 +310,7 @@ public class Action {
                 System.out.println("상대가 대사가 아니라는 것에 도전하시겠습니까?");
                 System.out.println("1. 너 대사 아니잖아 왜그래");
                 System.out.println("2. 하 이걸 믿으라고 ? ㅠ 믿을게");
-                int 상대가_대사가_아님에_도전 = InputRobot.scanner.nextInt();
+                int 상대가_대사가_아님에_도전 = InputRobot.selectChoice(2);
                 switch (상대가_대사가_아님에_도전) {
                     case 1:
                         if (to.getCardA().isAlive() && to.getCardA() instanceof Embassador
@@ -351,7 +351,7 @@ public class Action {
         from.minusCoin(7);
         participantList.printAliveParticipantListWithoutMe(from.getId());
 
-        int playerChoice = InputRobot.scanner.nextInt();
+        int playerChoice = InputRobot.selectChoice(participantList.getAliveParticipantIdList(from.getId()));
         Participant to = participantList.getParticipantById(playerChoice);
         to.dead();
     }
