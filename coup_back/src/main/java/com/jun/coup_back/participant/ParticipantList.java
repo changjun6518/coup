@@ -46,7 +46,7 @@ public class ParticipantList {
     public void action(Deck deck) {
         for (Participant participant : participantList) {
             if (Boolean.TRUE.equals(participant.isAlive())) {
-                participant.action(this, participantList, deck);
+                participant.action(this, deck);
             }
         }
     }

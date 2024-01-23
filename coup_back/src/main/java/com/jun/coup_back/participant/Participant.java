@@ -39,7 +39,7 @@ public class Participant {
         this.coin -= coin;
     }
 
-    public void action(ParticipantList participantList2, List<Participant> participantList, Deck deck) {
+    public void action(ParticipantList participantList, Deck deck) {
         System.out.println(id + "님 차례입니다.");
         showAliveCard();
         System.out.println("보유 coin : " + coin);
@@ -52,22 +52,22 @@ public class Participant {
                 action.addOneCoin(this);
                 break;
             case 2:
-                action.addTwoCoin(this, participantList2);
+                action.addTwoCoin(this, participantList);
                 break;
             case 3:
-                action.addThreeCoin(this, participantList2);
+                action.addThreeCoin(this, participantList);
                 break;
             case 4:
-                action.assassinate(this, participantList2);
+                action.assassinate(this, participantList);
                 break;
             case 5:
-                action.exchangeCard(this, participantList2, deck);
+                action.exchangeCard(this, participantList, deck);
                 break;
             case 6:
-                action.extortCoin(this, participantList2);
+                action.extortCoin(this, participantList);
                 break;
             case 7:
-                action.coup(this, participantList2);
+                action.coup(this, participantList);
                 break;
             default:
                 System.out.println("앙");
