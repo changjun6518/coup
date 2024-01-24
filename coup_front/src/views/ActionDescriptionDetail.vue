@@ -1,65 +1,64 @@
 <template>
   <ul role="list" class="divide-y divide-gray-100">
-    <li v-for="person in people" :key="person.email" class="flex justify-between gap-x-6 py-5">
+    <li v-for="action in actions" :key="action.email" class="flex justify-between gap-x-6 py-5">
       <div class="flex min-w-0 gap-x-4">
-        <img class="h-12 w-12 flex-none rounded-full bg-gray-50" :src="person.imageUrl" alt="" />
+        <img class="h-12 w-12 flex-none rounded-full bg-gray-50" :src="action.imageUrl" alt="" />
         <div class="min-w-0 flex-auto">
-          <p class="text-sm font-semibold leading-6 text-gray-900 inline-block">{{ person.name }}</p>
+          <p class="text-sm font-semibold leading-6 text-gray-900 inline-block">{{ action.name }}</p>
+          <p class="text-xs leading-6 text-gray-900">{{ action.role }}</p>
         </div>
       </div>
       <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <p class="text-xs leading-6 text-gray-900">{{ person.role }}</p>
-        <p class="mt-1 text-xs leading-5 text-gray-500">{{ person.passive }}</p>
-<!--        <p v-if="person.lastSeen" class="mt-1 text-xs leading-5 text-gray-500">-->
-<!--          Last seen <time :datetime="person.lastSeenDateTime">{{ person.lastSeen }}</time>-->
-<!--        </p>-->
-<!--        <div v-else class="mt-1 flex items-center gap-x-1.5">-->
-<!--          <div class="flex-none rounded-full bg-emerald-500/20 p-1">-->
-<!--            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />-->
-<!--          </div>-->
-<!--          <p class="text-xs leading-5 text-gray-500">Online</p>-->
-<!--        </div>-->
+        <p class="text-xs leading-6 text-gray-900">{{ action.role }}</p>
+        <p class="mt-1 text-xs leading-5 text-gray-500">{{ action.description }}</p>
       </div>
     </li>
   </ul>
 </template>
 
 <script setup>
-const people = [
+const actions = [
   {
-    name: '공작(Duke)',
-    passive: '해외원조를 방해할 수 있습니다.',
-    role: '세금징수 (코인 3개를 획득합니다.)',
+    name: '수입',
+    description: '1원 획득, 방해할 수 없습니다.',
+    imageUrl:
+        require('../assets/user.png'),
+  },
+  {
+    name: '해외원조',
+    description: '2원 획득, 공작에게 방해받을 수 있습니다.',
+    imageUrl:
+        require('../assets/user.png'),
+  },
+  {
+    name: '쿠',
+    description: '7원 지불, 한명을 지목하여 카드를 잃게합니다. 방해할 수 없습니다.',
+    imageUrl:
+        require('../assets/user.png'),
+  },
+  {
+    name: '징세',
+    description: '3원 획득, 공작 행동으로 방해할 수 없습니다.',
     imageUrl:
         require('../assets/duke.png'),
   },
   {
-    name: '암살자(Assassin)',
-    passive: '',
-    role: '코인 3원으로 상대를 암살할 수 있습니다.',
-    imageUrl:
-        require('../assets/assassin.png'),
-  },
-  {
-    name: '사령관(Captain)',
-    passive: '갈취를 막을 수 있습니다.',
-    role: '상대를 지목하여 코인 2원을 갈취할 수 있습니다.',
+    name: '강탈, 갈취',
+    description: '다른 플레이어로부터 2원을 빼앗아옵니다. 사령관 / 대사로 방해할 수 있습니다.',
     imageUrl:
         require('../assets/captain.png'),
   },
   {
-    name: '대사(Ambassador)',
-    passive: '갈취를 막을 수 있습니다.',
-    role: '카드 2장을 가져와 원하는 카드와 교환할 수 있습니다.',
+    name: '교환',
+    description: '덱의 카드 2장과 원하는 카드를 교환, 방해할 수 없습니다.',
     imageUrl:
         require('../assets/ambassador.png'),
   },
   {
-    name: '귀부인(Contessa)',
-    passive: '암살을 방어할 수 있습니다.',
-    role: '',
+    name: '암살',
+    description: '3원 지불, 다른 플레이어를 지목하여 암살합니다. 귀부인으로 방해할 수 있습니다.',
     imageUrl:
-        require('../assets/contessa.png'),
+        require('../assets/assassin.png'),
   },
 ]
 </script>

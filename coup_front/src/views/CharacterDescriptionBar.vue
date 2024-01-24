@@ -21,13 +21,13 @@
                     </button>
                   </div>
                 </TransitionChild>
-                <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
+                <div v-if="open" class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                   <div class="px-4 sm:px-6">
                     <DialogTitle class="text-base font-semibold leading-6 text-gray-900">케릭터(characters)</DialogTitle>
                   </div>
                   <div class="relative mt-6 flex-1 px-4 sm:px-6">
                     <!-- Your content -->
-                    <ActionDescriptionDetail></ActionDescriptionDetail>
+                    <CharacterDescriptionDetail></CharacterDescriptionDetail>
                   </div>
                 </div>
               </DialogPanel>
@@ -43,7 +43,7 @@
 import { ref } from 'vue'
 import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { XMarkIcon } from '@heroicons/vue/24/outline'
-import ActionDescriptionDetail from "@/views/ActionDescriptionDetail";
+import CharacterDescriptionDetail from "@/views/CharacterDescriptionDetail";
 
 const open = ref(true)
 </script>

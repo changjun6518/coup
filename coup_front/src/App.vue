@@ -1,6 +1,6 @@
 <template>
   <PageHeader></PageHeader>
-  <ActionDescriptionBar></ActionDescriptionBar>
+  <PageDashboard></PageDashboard>
   <router-view/>
 </template>
 
@@ -8,11 +8,11 @@
 
 
 import PageHeader from "@/views/PageHeader";
-import ActionDescriptionBar from "@/views/ActionDescriptionBar";
+import PageDashboard from "@/views/PageDashboard";
 export default {
   name: 'App',
   components: {
-    ActionDescriptionBar,
+    PageDashboard,
     PageHeader
   }
 }
