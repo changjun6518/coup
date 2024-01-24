@@ -4,21 +4,21 @@
       <div class="flex min-w-0 gap-x-4">
         <img class="h-12 w-12 flex-none rounded-full bg-gray-50" :src="person.imageUrl" alt="" />
         <div class="min-w-0 flex-auto">
-          <p class="text-sm font-semibold leading-6 text-gray-900">{{ person.name }}</p>
-          <p class="mt-1 truncate text-xs leading-5 text-gray-500">{{ person.email }}</p>
+          <p class="text-sm font-semibold leading-6 text-gray-900 inline-block">{{ person.name }}</p>
         </div>
       </div>
       <div class="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <p class="text-sm leading-6 text-gray-900">{{ person.role }}</p>
-        <p v-if="person.lastSeen" class="mt-1 text-xs leading-5 text-gray-500">
-          Last seen <time :datetime="person.lastSeenDateTime">{{ person.lastSeen }}</time>
-        </p>
-        <div v-else class="mt-1 flex items-center gap-x-1.5">
-          <div class="flex-none rounded-full bg-emerald-500/20 p-1">
-            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-          </div>
-          <p class="text-xs leading-5 text-gray-500">Online</p>
-        </div>
+        <p class="text-xs leading-6 text-gray-900">{{ person.role }}</p>
+        <p class="mt-1 text-xs leading-5 text-gray-500">{{ person.passive }}</p>
+<!--        <p v-if="person.lastSeen" class="mt-1 text-xs leading-5 text-gray-500">-->
+<!--          Last seen <time :datetime="person.lastSeenDateTime">{{ person.lastSeen }}</time>-->
+<!--        </p>-->
+<!--        <div v-else class="mt-1 flex items-center gap-x-1.5">-->
+<!--          <div class="flex-none rounded-full bg-emerald-500/20 p-1">-->
+<!--            <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />-->
+<!--          </div>-->
+<!--          <p class="text-xs leading-5 text-gray-500">Online</p>-->
+<!--        </div>-->
       </div>
     </li>
   </ul>
@@ -27,56 +27,39 @@
 <script setup>
 const people = [
   {
-    name: 'Leslie Alexander',
-    email: 'leslie.alexander@example.com',
-    role: 'Co-Founder / CEO',
+    name: '공작(Duke)',
+    passive: '해외원조를 방해할 수 있습니다.',
+    role: '세금징수 (코인 3개를 획득합니다.)',
     imageUrl:
-        'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: '3h ago',
-    lastSeenDateTime: '2023-01-23T13:23Z',
+        require('../assets/duke.png'),
   },
   {
-    name: 'Michael Foster',
-    email: 'michael.foster@example.com',
-    role: 'Co-Founder / CTO',
+    name: '암살자(Assassin)',
+    passive: '',
+    role: '코인 3원으로 상대를 암살할 수 있습니다.',
     imageUrl:
-        'https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: '3h ago',
-    lastSeenDateTime: '2023-01-23T13:23Z',
+        require('../assets/assassin.png'),
   },
   {
-    name: 'Dries Vincent',
-    email: 'dries.vincent@example.com',
-    role: 'Business Relations',
+    name: '사령관(Captain)',
+    passive: '갈취를 막을 수 있습니다.',
+    role: '상대를 지목하여 코인 2원을 갈취할 수 있습니다.',
     imageUrl:
-        'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: null,
+        require('../assets/captain.png'),
   },
   {
-    name: 'Lindsay Walton',
-    email: 'lindsay.walton@example.com',
-    role: 'Front-end Developer',
+    name: '대사(Ambassador)',
+    passive: '갈취를 막을 수 있습니다.',
+    role: '카드 2장을 가져와 원하는 카드와 교환할 수 있습니다.',
     imageUrl:
-        'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: '3h ago',
-    lastSeenDateTime: '2023-01-23T13:23Z',
+        require('../assets/ambassador.png'),
   },
   {
-    name: 'Courtney Henry',
-    email: 'courtney.henry@example.com',
-    role: 'Designer',
+    name: '귀부인(Contessa)',
+    passive: '암살을 방어할 수 있습니다.',
+    role: '',
     imageUrl:
-        'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: '3h ago',
-    lastSeenDateTime: '2023-01-23T13:23Z',
-  },
-  {
-    name: 'Tom Cook',
-    email: 'tom.cook@example.com',
-    role: 'Director of Product',
-    imageUrl:
-        'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-    lastSeen: null,
+        require('../assets/contessa.png'),
   },
 ]
 </script>

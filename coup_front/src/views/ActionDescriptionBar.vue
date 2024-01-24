@@ -23,7 +23,7 @@
                 </TransitionChild>
                 <div class="flex h-full flex-col overflow-y-scroll bg-white py-6 shadow-xl">
                   <div class="px-4 sm:px-6">
-                    <DialogTitle class="text-base font-semibold leading-6 text-gray-900">player actions</DialogTitle>
+                    <DialogTitle class="text-base font-semibold leading-6 text-gray-900">케릭터(characters)</DialogTitle>
                   </div>
                   <div class="relative mt-6 flex-1 px-4 sm:px-6">
                     <!-- Your content -->
