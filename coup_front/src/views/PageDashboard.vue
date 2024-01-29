@@ -9,6 +9,7 @@
           <ActionDescriptionDetail></ActionDescriptionDetail>
         </div>
         <div class="flex-1">
+          <PageDesk></PageDesk>
         </div>
       </div>
     </div>
@@ -17,7 +18,8 @@
 <script>
 import CharacterDescriptionBar from "@/views/CharacterDescriptionBar";
 import ActionDescriptionDetail from "@/views/ActionDescriptionDetail";
+import PageDesk from "@/views/PageDesk";
 export default {
-  components: {ActionDescriptionDetail, CharacterDescriptionBar}
+  components: {PageDesk, ActionDescriptionDetail, CharacterDescriptionBar}
 }
 </script>
